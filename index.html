@@ -902,7 +902,8 @@
 
       /* ---------- APP STATE ---------- */
       let state = {
-        income: 0,
+        calcIncome: 0,
+        realIncome: 0,
         expenses: [],
         goals: [],
         categories: [
@@ -954,8 +955,8 @@
         const totalExpenses = debits.reduce((s, e) => s + Number(e.amount), 0);
         const totalCredits = credits.reduce((s, e) => s + Number(e.amount), 0);
 
-        const income = Number(state.income || 0) + totalCredits;
-        const savings = income - totalExpenses;
+        const income = totalCredits;
+        const savings = totalCredits - totalExpenses;
 
         let avgDaily = 0;
         if (debits.length > 0) {
@@ -1416,12 +1417,17 @@
       }
 
       /* ---------- SUMMARY ---------- */
+      function renderCalculator() {
+        const calc = Number(state.calcIncome || 0);
+        k_common.textContent = currency(calc * 0.5);
+        k_invest.textContent = currency(calc * 0.4);
+        k_extra.textContent = currency(calc * 0.1);
+      }
+
       function updateSummary() {
         const s = computeStats();
 
-        k_common.textContent = currency(Number(state.income) * 0.5);
-        k_invest.textContent = currency(Number(state.income) * 0.4);
-        k_extra.textContent = currency(Number(state.income) * 0.1);
+        renderCalculator();
 
         stat_income.textContent = currency(s.income);
         stat_expenses.textContent = currency(s.totalExpenses);
@@ -1609,9 +1615,10 @@
       });
 
       calcBtn.addEventListener("click", () => {
-        state.income = Number(incomeInput.value);
+        state.calcIncome = Number(incomeInput.value);
         saveState();
         updateUI();
+        renderCalculator();
       });
 
       sampleBtn.addEventListener("click", () => {
