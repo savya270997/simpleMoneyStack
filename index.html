@@ -394,11 +394,6 @@
           padding: 14px;
         }
 
-        .stacked-col,
-        .area-card {
-          height: 220px;
-        }
-
         .form-grid,
         .form-grid-2 {
           grid-template-columns: 1fr;
@@ -421,13 +416,42 @@
 
       /* SMALL PHONES */
       @media (max-width: 420px) {
-        .stacked-col,
-        .area-card {
-          height: 180px;
-        }
         .logo {
           width: 42px;
           height: 42px;
+        }
+      }
+
+      /* MOBILE FIX — make charts fully visible */
+      @media (max-width: 600px) {
+        .stacked-col,
+        .area-card {
+          height: auto; /* allow full height */
+          min-height: 300px; /* guarantee visibility */
+        }
+
+        .chart-inner {
+          min-height: 260px; /* ensure canvas stays visible */
+        }
+
+        canvas {
+          height: 260px !important; /* properly scale chart */
+        }
+      }
+
+      /* VERY SMALL PHONES */
+      @media (max-width: 420px) {
+        .stacked-col,
+        .area-card {
+          min-height: 260px;
+        }
+
+        .chart-inner {
+          min-height: 240px;
+        }
+
+        canvas {
+          height: 240px !important;
         }
       }
     </style>
